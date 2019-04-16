@@ -3,12 +3,13 @@ import path from 'path';
 import { MongoClient } from 'mongodb';
 import devBundle from './devBundle';
 import template from './../template';
+import config from './../config/config';
 
 const app = express();
 devBundle.compile(app);
 
 // Connect node server to MongoDB
-const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/mern';
+const url = config.mongoUri;
 MongoClient.connect(url, (err, db) => {
   console.log("Connected sucessfully to MongoDB server");
   db.close();
@@ -23,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 // Server code
-let port = process.env.PORT || 3000;
+let port = config.port;
 app.listen(port, function onStart(err) {
   if (err) {
     console.log(err);
